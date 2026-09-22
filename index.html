@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Материалы к Уроку Abacus AI Agent | Мастодонт</title>
+<style>
+@font-face{font-family:"Benzin";src:url("fonts/Benzin-Semibold.ttf") format("truetype");font-weight:600;font-display:swap}
+@font-face{font-family:"Benzin";src:url("fonts/Benzin-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"Onest";src:url("fonts/Onest-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Onest";src:url("fonts/Onest-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+@font-face{font-family:"Onest";src:url("fonts/Onest-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"Blender";src:url("fonts/BlenderPro-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+@font-face{font-family:"Blender";src:url("fonts/BlenderPro-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+
+:root{--bg:#07070C;--bg2:#0D0D15;--bg3:#12121C;--ink:#ECEAF5;--dim:#8C88A6;
+--line:rgba(236,234,245,.09);--line2:rgba(236,234,245,.22);--a1:#8B5CF6;--a2:#22D3EE;
+--pad:clamp(20px,4vw,64px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--a1) var(--bg2)}
+html::-webkit-scrollbar{width:12px}
+html::-webkit-scrollbar-track{background:var(--bg2)}
+html::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--a1),var(--a2));border-radius:8px;border:3px solid var(--bg2)}
+html::-webkit-scrollbar-thumb:hover{background:var(--a1)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Onest",sans-serif;
+font-size:clamp(16px,1.1vw,18px);line-height:1.65;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+background:radial-gradient(760px 620px at 82% 8%,rgba(139,92,246,.16),transparent 70%),
+radial-gradient(660px 560px at 8% 62%,rgba(34,211,238,.10),transparent 70%)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{width:min(1120px,100%);margin:0 auto;padding:0 var(--pad);position:relative;z-index:2}
+
+.aura{position:fixed;width:640px;height:640px;left:0;top:0;pointer-events:none;z-index:0;
+transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(139,92,246,.12),transparent 62%)}
+.bar{position:fixed;left:0;top:0;height:3px;width:0;z-index:200;
+background:linear-gradient(90deg,var(--a1),var(--a2));box-shadow:0 0 18px rgba(139,92,246,.7)}
+
+nav{position:sticky;top:0;z-index:90;background:rgba(7,7,12,.84);backdrop-filter:blur(14px) saturate(1.3);
+border-bottom:1px solid transparent;
+border-image:linear-gradient(90deg,transparent,var(--a1),var(--a2),transparent) 1}
+.nav-in{display:flex;align-items:center;gap:22px;height:66px}
+.brand{font-family:"Benzin";font-weight:700;font-size:clamp(14px,1.4vw,18px);text-transform:uppercase;letter-spacing:.03em}
+.nav-links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav a{font-family:"Blender";font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+color:var(--dim);text-decoration:none;padding:9px 13px;border-radius:3px;transition:.25s}
+nav a:hover{color:var(--ink);background:rgba(139,92,246,.12)}
+@media(max-width:820px){.nav-links{display:none}}
+
+.hero{position:relative;overflow:hidden;display:grid;align-items:end;
+aspect-ratio:2048/1152;max-height:min(104vh,1180px);
+border-bottom:1px solid rgba(236,234,245,.14)}
+.hero-img{position:absolute;inset:-3% 0 0;width:100%;height:106%;object-fit:cover;
+object-position:center 42%;will-change:transform}
+.hero::after{content:"";position:absolute;inset:0;
+background:linear-gradient(180deg,rgba(7,7,12,.5) 0%,rgba(7,7,12,.12) 24%,rgba(7,7,12,.3) 52%,rgba(7,7,12,.8) 76%,rgba(7,7,12,.97) 92%,#07070C 100%)}
+.hero-in{position:relative;z-index:3;width:min(1120px,100%);margin:0 auto;
+padding:0 var(--pad) clamp(34px,5vw,80px);display:flex;flex-direction:column;align-items:flex-start;text-align:left}
+@media(max-width:860px){
+.hero{aspect-ratio:auto;max-height:none;display:block}
+.hero-img{position:relative;inset:auto;height:auto;aspect-ratio:2048/1152;transform:none!important}
+.hero::after{inset:auto 0 0;height:46%}
+.hero-in{padding-top:28px}}
+.badge{display:inline-block;font-family:"Blender";font-weight:700;font-size:12px;letter-spacing:.26em;
+text-transform:uppercase;color:var(--a2);border:1px solid var(--a2);padding:8px 15px;border-radius:2px;
+background:rgba(7,7,12,.6);backdrop-filter:blur(6px)}
+h1{font-family:"Benzin";font-weight:700;text-transform:uppercase;margin:22px 0 0;
+font-size:clamp(26px,4.9vw,62px);line-height:1.04;letter-spacing:-.02em;
+text-shadow:0 6px 44px rgba(0,0,0,.9)}
+h1 em{font-style:normal;color:#C4A6FF;
+text-shadow:0 0 34px rgba(160,110,255,.85),0 0 72px rgba(110,70,230,.5),0 4px 22px rgba(0,0,0,.95)}
+.sub{margin:18px 0 0;color:var(--dim);max-width:60ch;text-shadow:0 2px 18px rgba(0,0,0,.8)}
+.watch{display:inline-flex;align-items:center;gap:11px;margin-top:28px;
+background:linear-gradient(100deg,var(--a1),var(--a2));color:#07070C;
+font-family:"Blender";font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;
+padding:16px 30px;border-radius:3px;text-decoration:none;
+box-shadow:0 12px 34px rgba(139,92,246,.32);transition:transform .22s,box-shadow .22s}
+.watch:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 46px rgba(139,92,246,.5)}
+
+section{padding:clamp(48px,6.5vw,104px) 0;position:relative;z-index:2}
+h2{font-family:"Benzin";font-weight:700;text-transform:uppercase;margin:0 0 12px;
+font-size:clamp(21px,3.2vw,42px);line-height:1.05;letter-spacing:-.015em}
+.h2-note{color:var(--dim);margin:0 0 38px;max-width:60ch}
+h3{font-family:"Benzin";font-weight:600;text-transform:uppercase;margin:0 0 13px;
+font-size:clamp(16px,1.9vw,25px);line-height:1.16;letter-spacing:-.01em}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;perspective:1100px}
+.card{background:linear-gradient(160deg,var(--bg3),var(--bg2));border:1px solid var(--line);
+border-radius:8px;padding:28px 26px;position:relative;overflow:hidden;
+transform-style:preserve-3d;transition:transform .3s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s}
+.card:hover{border-color:var(--line2);box-shadow:0 22px 50px rgba(0,0,0,.6)}
+.card::before{content:"";position:absolute;inset:0 0 auto;height:3px;
+background:linear-gradient(90deg,var(--a1),var(--a2));transform:scaleX(0);transform-origin:left;
+transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.card:hover::before{transform:scaleX(1)}
+.card p{margin:0;color:var(--dim);font-size:.95em}
+.card .ic{font-family:"Benzin";font-weight:700;color:transparent;-webkit-text-stroke:1px var(--a1);
+font-size:32px;line-height:1;margin-bottom:16px;transition:.3s}
+.card:hover .ic{color:var(--a1);-webkit-text-stroke:1px transparent}
+.card h3{margin-bottom:9px}
+
+.tools{display:grid;gap:11px}
+.tool{display:flex;align-items:center;gap:16px;background:var(--bg2);border:1px solid var(--line);
+border-radius:6px;padding:19px 24px;flex-wrap:wrap;text-decoration:none;color:inherit;
+position:relative;overflow:hidden;transition:transform .25s,border-color .25s,background .25s}
+.tool::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+background:linear-gradient(180deg,var(--a1),var(--a2));transform:scaleY(0);transition:transform .3s}
+.tool:hover{border-color:var(--line2);transform:translateX(6px);background:var(--bg3)}
+.tool:hover::before{transform:scaleY(1)}
+.tool .nm{font-family:"Blender";font-weight:700;font-size:15px;letter-spacing:.1em;text-transform:uppercase}
+.tool .ds{color:var(--dim);font-size:.9em;flex:1;min-width:180px}
+.pill{font-family:"Blender";font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+padding:6px 12px;border-radius:2px;border:1px solid var(--line2);color:var(--dim);white-space:nowrap}
+.pill.free{color:var(--a2);border-color:rgba(34,211,238,.45)}
+.pill.pay{color:#C4A6FF;border-color:rgba(139,92,246,.5)}
+
+.step{display:grid;grid-template-columns:minmax(96px,140px) 1fr;gap:clamp(16px,2.4vw,38px);
+background:linear-gradient(155deg,var(--bg3),var(--bg2) 60%);border:1px solid var(--line);
+border-radius:10px;padding:clamp(26px,3.2vw,44px);margin-bottom:16px;position:relative;overflow:hidden;
+box-shadow:0 18px 44px rgba(0,0,0,.4)}
+.step::before{content:"";position:absolute;inset:0 0 auto;height:3px;
+background:linear-gradient(90deg,var(--a1),var(--a2),transparent)}
+.step::after{content:"";position:absolute;right:-120px;top:-120px;width:300px;height:300px;
+pointer-events:none;background:radial-gradient(circle,rgba(139,92,246,.12),transparent 68%)}
+.step-num{font-family:"Benzin";font-weight:700;font-size:clamp(42px,4.6vw,86px);line-height:.85;
+color:transparent;-webkit-text-stroke:1.5px rgba(139,92,246,.6);
+letter-spacing:-.03em;white-space:nowrap;max-width:100%;
+position:sticky;top:96px;align-self:start}
+@media(max-width:820px){.step{grid-template-columns:1fr}.step-num{position:static;font-size:40px}}
+.step .lead{color:var(--dim);margin:0 0 20px;max-width:66ch}
+.acts{list-style:none;padding:0;margin:0 0 20px}
+.acts li{position:relative;padding-left:26px;margin-bottom:11px}
+.acts li::before{content:"▸";position:absolute;left:0;color:var(--a2)}
+.acts a,.tip a,.lead a{color:var(--a2)}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;background:rgba(139,92,246,.16);
+padding:2px 7px;border-radius:3px;font-size:.9em;color:#C4A6FF}
+
+.pr{margin:22px 0;background:#06060A;border:1px solid var(--line);border-left:3px solid transparent;
+border-image:linear-gradient(180deg,var(--a1),var(--a2)) 1;
+box-shadow:0 14px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.04);
+border-radius:0 6px 6px 0;overflow:hidden}
+.pr-top{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.pr-lab{font-family:"Blender";font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--a2)}
+.copy{margin-left:auto;background:transparent;border:1px solid var(--line2);color:var(--dim);
+font-family:"Blender";font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+padding:8px 15px;border-radius:2px;cursor:pointer;transition:.2s}
+.copy:hover{border-color:var(--a1);color:#C4A6FF;box-shadow:0 0 20px rgba(139,92,246,.3)}
+.copy.done{border-color:var(--a2);color:var(--a2)}
+.pr-body{margin:0;padding:20px 18px;white-space:pre-wrap;word-break:break-word;
+font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em;line-height:1.62;
+max-height:360px;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--a1) var(--bg2)}
+.pr-body::-webkit-scrollbar{width:10px}
+.pr-body::-webkit-scrollbar-track{background:var(--bg2)}
+.pr-body::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--a1),var(--a2));border-radius:6px}
+.pr.short .pr-body{max-height:none}
+
+.tip,.warn{border-radius:6px;padding:16px 20px;margin:18px 0 0;font-size:.94em}
+.tip{background:rgba(34,211,238,.05);border:1px solid rgba(34,211,238,.24)}
+.warn{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.3)}
+
+.shot{position:relative;border-radius:12px;overflow:hidden;display:grid;align-items:end;
+aspect-ratio:2048/1152;box-shadow:0 40px 90px rgba(0,0,0,.7);
+--gut:clamp(18px,3.2vw,64px);
+width:calc(100vw - var(--gut)*2);
+margin-left:calc(50% - 50vw + var(--gut));
+margin-top:clamp(52px,7vw,110px);margin-bottom:clamp(52px,7vw,110px)}
+.shot img{position:absolute;inset:-3% 0 0;width:100%;height:106%;object-fit:cover;will-change:transform}
+.shot::after{content:"";position:absolute;inset:0;
+background:linear-gradient(180deg,rgba(7,7,12,.12),rgba(7,7,12,.92))}
+.shot figcaption{position:relative;z-index:2;padding:clamp(22px,4vw,62px);max-width:1120px;
+font-family:"Benzin";font-weight:700;text-transform:uppercase;font-size:clamp(17px,2.7vw,40px);line-height:1.08;letter-spacing:-.02em}
+.shot .k{display:block;font-family:"Blender";font-weight:700;font-size:12px;letter-spacing:.24em;
+color:var(--a2);margin-bottom:12px}
+
+[data-rv]{opacity:0;transform:translateY(34px) scale(.985);
+transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+[data-rv].in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){[data-rv]{opacity:1;transform:none;transition:none}
+.hero-img,.shot img{transform:none!important}}
+
+.cta{background:linear-gradient(155deg,var(--bg3),var(--bg2));border:1px solid var(--line2);border-radius:10px;
+padding:clamp(30px,4vw,58px);position:relative;overflow:hidden;cursor:pointer;
+transition:border-color .3s,transform .3s;animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 44px rgba(139,92,246,.12)}50%{box-shadow:0 0 84px rgba(139,92,246,.26)}}
+.cta:hover{border-color:var(--a1);transform:translateY(-4px)}
+.cta-hit{position:absolute;inset:0;z-index:5;display:block}
+.cta::after{content:"";position:absolute;left:-90px;bottom:-90px;width:320px;height:320px;pointer-events:none;
+background:radial-gradient(circle,rgba(34,211,238,.14),transparent 68%)}
+.cta h2 span{background:linear-gradient(100deg,var(--a1),var(--a2));-webkit-background-clip:text;
+background-clip:text;color:transparent}
+.cta-cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,3vw,50px);margin-top:30px}
+@media(max-width:760px){.cta-cols{grid-template-columns:1fr}}
+.cta-cols h4{font-family:"Blender";font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+color:var(--a2);margin:0 0 15px}
+.cta-cols ul{list-style:none;padding:0;margin:0}
+.cta-cols li{margin-bottom:12px;color:var(--dim);font-size:.95em}
+.cta-bottom{display:flex;align-items:center;gap:20px;margin-top:34px;flex-wrap:wrap;
+border-top:1px solid var(--line);padding-top:28px}
+.cta-bottom .free{font-family:"Blender";font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+font-size:14px;color:var(--dim)}
+.cta-bottom .free b{color:var(--a2)}
+.cta-btn{margin-left:auto;background:linear-gradient(100deg,var(--a1),var(--a2));color:#07070C;
+font-family:"Blender";font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;
+padding:16px 32px;border-radius:3px;transition:transform .22s}
+.cta:hover .cta-btn{transform:translateY(-2px) scale(1.03)}
+
+footer{border-top:1px solid var(--line);padding:44px 0 66px;position:relative;z-index:2}
+.f-in{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.f-in .tag{color:var(--dim);font-size:.92em}
+.f-in a{margin-left:auto;color:var(--a2);text-decoration:none;font-family:"Blender";font-weight:700;
+font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+::selection{background:var(--a1);color:#07070C}
+</style></head><body>
+
+<div class="bar" id="bar"></div>
+<div class="aura" id="aura"></div>
+
+<nav><div class="wrap nav-in">
+<span class="brand">Мастодонт</span>
+<div class="nav-links">
+<a href="#learn">Что научишься</a><a href="#tools">Инструменты</a><a href="#priemy">Пять приёмов</a><a href="#steps">Шаги</a><a href="#links">Ссылки</a>
+</div></div></nav>
+
+<header class="hero">
+<img class="hero-img" id="heroimg" src="img/hero.jpg" alt="Три сайта за один вечер в Abacus AI Agent">
+<div class="hero-in">
+<span class="badge" data-rv>Материалы к уроку</span>
+<h1 data-rv>Abacus AI Agent<br><em>Сайты с характером</em></h1>
+<p class="sub" data-rv>Три полноценных сайта за вечер: код, картинки, видео и публикация в одном окне. Все промпты из видео - целиком, копируются кнопкой.</p>
+<a class="watch" data-rv href="https://www.youtube.com/@aiBoomb" target="_blank">▶ Смотреть видео</a>
+</div></header>
+
+<section id="learn"><div class="wrap">
+<h2 data-rv>Что научишься делать</h2>
+<p class="h2-note" data-rv>Шесть вещей. Каждая работает отдельно от остальных.</p>
+<div class="cards">
+<div class="card" data-rv><div class="ic">01</div><p>Собирать готовый анимированный сайт одним промптом - вместе с картинками, видео и 3D</p></div>
+<div class="card" data-rv><div class="ic">02</div><p>Ставить свой скилл с принципами дизайна, чтобы модель держала один стиль</p></div>
+<div class="card" data-rv><div class="ic">03</div><p>Называть пять приёмов анимации по имени - и получать ровно их</p></div>
+<div class="card" data-rv><div class="ic">04</div><p>Публиковать сайт одной командой, не открывая ни одной панели хостинга</p></div>
+<div class="card" data-rv><div class="ic">05</div><p>Чинить мобильную версию скриншотом и одной фразой</p></div>
+<div class="card" data-rv><div class="ic">06</div><p>Брать референсы там, где их берут дизайнеры, и просить разобрать, почему они работают</p></div>
+</div></div></section>
+
+<section id="tools"><div class="wrap">
+<h2 data-rv>Что понадобится</h2>
+<p class="h2-note" data-rv>Обязателен только первый. Остальные четыре - бесплатные склады референсов.</p>
+<div class="tools">
+<a class="tool" data-rv href="https://agent.abacus.ai/abo" target="_blank"><span class="nm">Abacus AI Agent</span><span class="ds">Код, картинки, видео и публикация в одном окне. Внутри GPT-6 Astra, Fable 5.1, Gemini 3.5, Grok 4.1, DeepSeek</span><span class="pill pay">10 $/мес</span></a>
+<a class="tool" data-rv href="https://www.awwwards.com" target="_blank"><span class="nm">Awwwards</span><span class="ds">Сайты дня по категориям - чтобы не тащить коктейльный референс на железку</span><span class="pill free">бесплатно</span></a>
+<a class="tool" data-rv href="https://godly.design" target="_blank"><span class="nm">Godly</span><span class="ds">То же самое плюс отдельные куски: шапки, подвалы, кнопки</span><span class="pill free">бесплатно</span></a>
+<a class="tool" data-rv href="https://21st.dev" target="_blank"><span class="nm">21st.dev</span><span class="ds">Готовые куски кода - отдаются агенту прямо как есть</span><span class="pill free">бесплатно</span></a>
+<a class="tool" data-rv href="https://motionsites.ai" target="_blank"><span class="nm">Motionsites</span><span class="ds">Конкретно под фоновые анимации</span><span class="pill free">бесплатно</span></a>
+</div></div></section>
+
+<section id="priemy"><div class="wrap">
+<h2 data-rv>Пять приёмов</h2>
+<p class="h2-note" data-rv>Нельзя заказать то, чего не можешь назвать. Напишешь «сделай посовременнее» - не получишь ничего. Напишешь «вращение от скролла на первом экране» - получишь ровно это.</p>
+<div class="cards">
+<div class="card" data-rv><div class="ic">01</div><h3>Слоёный параллакс</h3><p>Фон, средний план и передний едут с разной скоростью, пока ты листаешь</p></div>
+<div class="card" data-rv><div class="ic">02</div><h3>Проявление текста</h3><p>Слов на странице просто нет, пока до них не долистал</p></div>
+<div class="card" data-rv><div class="ic">03</div><h3>Вращение от скролла</h3><p>Объект не проигрывает анимацию - его крутит положение скролла. Листаешь обратно, он поворачивается в другую сторону</p></div>
+<div class="card" data-rv><div class="ic">04</div><h3>Слежение за курсором</h3><p>Глаза персонажа идут за мышкой, причём уходят дальше, чем поворачивается голова</p></div>
+<div class="card" data-rv><div class="ic">05</div><h3>Наезжающие карточки</h3><p>Каждая секция наползает поверх предыдущей, а не выталкивает её с экрана</p></div>
+</div></div></section>
+
+<section id="steps" style="padding-bottom:0"><div class="wrap">
+<h2 data-rv>Шаги</h2>
+<p class="h2-note" data-rv>Восемь шагов по порядку. Все промпты - боевые, из видео, копируются кнопкой.</p>
+
+<div class="step" data-rv>
+<div class="step-num">01</div>
+<div>
+<h3>Ставим скилл с принципами дизайна</h3>
+<p class="lead">Подключать генераторы картинок и видео не надо - они уже внутри. Единственное, что грузим руками, это обычный текстовый файл с принципами дизайна. Он заставляет модель держать один стиль во всех сборках.</p>
+<ul class="acts">
+<li>Открой <a href="https://agent.abacus.ai/abo" target="_blank">agent.abacus.ai</a> и залогинься</li>
+<li>Зайди в раздел <b>Apps</b> - добавить скилл</li>
+<li>Загрузи текстовый файл с принципами (текст ниже)</li>
+<li>Назови скилл <code>Design King</code> и напиши короткий дескрипшен - когда его применять</li>
+<li>Создай скилл и выбери его в чате перед сборкой</li>
+</ul>
+<div class="pr">
+<div class="pr-top"><span class="pr-lab">📄 Файл скилла - принципы дизайна</span><button class="copy"><span>Скопировать</span></button></div>
+<pre class="pr-body">ПРИНЦИПЫ ДИЗАЙНА
+
+СЛОИ
+Глубина вместо плоскости. Фон, средний план и передний план работают
+по-разному: разная скорость движения, разный вес, разная резкость.
+Плоская страница - это страница, где всё лежит в одном слое.
+
+ОТСТУПЫ
+Место, чтобы дышать. Воздух вокруг крупного элемента - это часть
+композиции, а не пустота, которую надо чем-то занять.
+Поля страницы широкие, между секциями много пространства.
+
+СДЕРЖАННОСТЬ
+Половина работы - решить, чего на странице не будет.
+Движение только там, где оно что-то говорит.
+В каждый момент времени двигается только одно.</pre>
+</div>
+<div class="tip">💡 В каталоге уже есть готовые скиллы - можешь не писать свой, а поставить чужой.</div>
+</div>
+</div>
+
+<div class="step" data-rv>
+<div class="step-num">02</div>
+<div>
+<h3>Сборка первая - энергетик MASTODONT</h3>
+<p class="lead">Начинаем с самого хардкорного: четыре вкуса, одна банка, белый фон и шесть отдельных анимаций на одной странице. Открой новый чат, выбери скилл и вставь промпт целиком.</p>
+<ul class="acts">
+<li>Новый чат в Abacus AI Agent</li>
+<li>Выбери модель GPT-6 Astra и скилл с принципами дизайна</li>
+<li>Вставь промпт одним сообщением - он сам генерит картинки, видео и 3D и собирает сайт за один заход</li>
+</ul>
+<div class="pr">
+<div class="pr-top"><span class="pr-lab">💬 Промпт 1 - сайт энергетика</span><button class="copy"><span>Скопировать</span></button></div>
+<pre class="pr-body">Собери полностью готовый, отполированный, анимированный маркетинговый сайт
+для MASTODONT — яркого энергетика в банках. Сгенерируй все материалы, реализуй
+каждое взаимодействие, проверь продакшен-сборку и опубликуй готовый сайт за
+один заход.
+
+ВИЗУАЛЬНОЕ НАПРАВЛЕНИЕ
+Сайт должен ощущаться дерзким, заряженным, игривым и премиальным.
+Используй:
+- Чистый белый фон с едва заметной бумажной зернистостью.
+- Почти чёрный текст #171719.
+- Barlow Condensed, начертание 800-900, для огромных заголовков.
+- DM Sans для навигации, описаний и элементов управления.
+- Плотные заголовки: высота строки примерно 0.89, межбуквенное -0.027em.
+- Много воздуха и примерно 5% горизонтальных полей страницы.
+- Реалистичные летающие фрукты, ярко окрашенные банки, тонкие рамки и
+  скруглённые элементы-таблетки.
+Текста минимум. Не используй номера секций, мелкие подписи капсом, бледные
+буквы на фоне, повторяющиеся слоганы, лишние секции и типовые маркетинговые
+блоки.
+Собирай на React, Tailwind CSS, GSAP ScrollTrigger, Three.js и Lenis для
+плавного скролла.
+
+БРЕНДОВЫЕ И ПРОДУКТОВЫЕ МАТЕРИАЛЫ
+Сгенерируй сам изображения продукта, вырезанные фрукты, маскота и видео с
+наливанием.
+Сделай четыре одинаковые высокие узкие алюминиевые банки:
+- Красный апельсин: вишнёво-красный #ED252A
+- Маракуйя с юдзу: солнечно-жёлтый #FFD52A
+- Черника: электрик-синий #2257F5
+- Лайм с мятой: свежий зелёный #23B447
+У каждой банки: полностью окрашенный корпус с серебристыми ободками и ключом,
+крупная игривая массивная горизонтальная надпись MASTODONT, читаемое название
+вкуса под ней, яркие иллюстрации фрукта по нижней половине, кремовые буквы на
+красном, синем и зелёном и тёмные на жёлтом, реалистичные блики и лёгкий
+конденсат.
+Сначала сгенерируй красную банку как эталон, потом по ней делай остальные.
+Держи одинаковыми пропорции, свет, типографику и расположение рисунка.
+Сделай прозрачные вырезки, версии в WebP и цилиндрические текстуры-обёртки
+для Three.js.
+Сгенерируй прозрачные вырезки фруктов и разбросай их вокруг продуктов и по
+краям секций так, чтобы они не перекрывали заголовки и кнопки.
+
+ШАПКА
+Слева вверху чёрная слегка наклонённая надпись MASTODONT.
+Справа вверху: «Наши вкусы» ведёт к карточкам вкусов, «Что внутри» в тонкой
+чёрной таблетке-обводке ведёт к секции со вскрытием.
+Высота шапки на десктопе примерно 110px, на телефоне меньше.
+
+ТОЧНЫЙ ПОРЯДОК СЕКЦИЙ
+Первый экран, маскот, видео с наливанием, круговое вскрытие, вращение вкусов,
+карточки вкусов, подвал.
+
+1. ЗАКРЕПЛЁННЫЙ ПЕРВЫЙ ЭКРАН
+Белый, на всю высоту окна. Слева огромный заголовок:
+ЗАРЯД
+ЗАПЕЧАТАН
+В БАНКЕ.
+Размер примерно 10.4vw, не больше 170px. Под ним подчёркнутая ссылка
+«Смотреть вкусы».
+Справа большая красная банка. Собери её настоящим объектом Three.js:
+цилиндрический корпус, сужающиеся плечи, серебристая крышка, дно, выступающие
+ободки, отверстие и ключ. Наложи брендовую обёртку, наклони, положи мягкую
+тень.
+Внизу слева: «Фруктовый заряд. Вкус на полную.» Внизу справа «Самое сочное»
+ведёт к секции с маскотом.
+Закрепи экран примерно на полторы высоты окна прокрутки. Двигай банку справа
+налево, вращая на один полный оборот. Привяжи положение и вращение напрямую к
+прогрессу скролла, чтобы обратная прокрутка проигрывала анимацию назад.
+Пока банка едет, растворяй начальный заголовок. Когда доедет до левого края,
+справа проявляй:
+МАЛЕНЬКАЯ БАНКА.
+БОЛЬШАЯ
+ЭНЕРГИЯ.
+Добавь лёгкую подсветку от курсора и параллакс фруктов.
+
+2. МАСКОТ
+Просторная белая секция, крупный заголовок по центру:
+У НАС ХОРОШО
+ВНУТРИ.
+Под ним милый улыбающийся мамонтёнок: добрые глаза, маленькие бивни, хобот,
+короткие лапы, мохнатый, рыжевато-бурый.
+Голова едва заметно следует за курсором, зрачки идут следом с небольшой
+задержкой.
+Окружи его фруктами, дай им мягкое парение и заставь слегка отодвигаться,
+когда курсор подходит близко.
+
+3. РАЗВОРАЧИВАЮЩЕЕСЯ ВИДЕО
+Сгенерируй беззвучное видео примерно на шесть секунд в разрешении 3840х2160:
+та же красная банка наливает оранжево-красный газированный напиток в
+прозрачный стакан со льдом. Белый студийный фон, реалистичная жидкость,
+пузырьки газа, конденсат, брызги в замедленной съёмке.
+Сначала помести видео в маленькое окно по центру, примерно 46% ширины окна.
+Над ним и под ним огромный текст:
+ПОЧУВСТВУЙ
+ЗАРЯД
+Закрепи секцию и разворачивай видео, пока оно не заполнит её целиком,
+одновременно уводя и растворяя текст.
+Добавь кнопку «Смотреть / Пауза» в белой таблетке у левого нижнего угла.
+Ставь на паузу, когда секция уходит из окна.
+
+4. КРУГОВОЕ ВСКРЫТИЕ
+Белая секция в две колонки. Слева:
+ВСЁ ДЕЛО
+ВНУТРИ.
+Поясняющий текст: «Немного любопытства. И очень много заряда.»
+Кнопка «Заглянуть внутрь», под ней «Веди мышкой, тащи пальцем или жми
+стрелки».
+Справа большая целая красная банка. Сгенерируй точно совмещённое изображение
+разреза: лёд, апельсиновый сок, пузырьки газа, фруктовая мякоть. Оба
+изображения должны совпадать по размерам, силуэту и положению ободков.
+Показывай внутренности только внутри маленького круга с центром под курсором,
+радиус примерно 85px на десктопе и 65px на телефоне. Круг идёт за курсором без
+задержки, всё за его пределами остаётся целой банкой.
+Не растворяй банку целиком, не показывай слои во всю ширину и не оставляй за
+курсором процарапанный след.
+Убирай вскрытие, когда курсор уходит. Поддержи перетаскивание пальцем,
+стрелки при фокусе и Escape для закрытия.
+
+5. ЗАКРЕПЛЁННОЕ ВРАЩЕНИЕ ВКУСОВ
+Белая секция на всю высоту, одна банка Three.js по центру, бледное органическое
+пятно цвета вкуса за ней.
+Название активного вкуса огромным капсом слева вверху, счётчик 01 / 04 справа
+вверху.
+Пока идёт прокрутка закреплённой секции, вращай банку и плавно переводи её
+через все четыре обёртки. Обновляй название, акцентный цвет, счётчик и фрукты.
+Показывай только название активного вкуса.
+Внизу по центру четыре кликабельные цветные точки, у выбранной тонкое чёрное
+кольцо.
+
+6. ЛИПКИЕ КАРТОЧКИ ВКУСОВ
+Четыре большие просторные карточки, наезжающие друг на друга при прокрутке.
+У каждой: белый фон, тонкая рамка цвета вкуса, скругление примерно 32px,
+огромное название вкуса капсом слева, короткое описание под ним, большая
+наклонённая банка справа, бледное пятно за ней, летающие фрукты, сдержанный
+наклон от курсора.
+Описания дословно:
+- Красный апельсин: «Насыщенный горько-сладкий цитрус.»
+- Маракуйя с юдзу: «Тропики и терпкий юдзу.»
+- Черника: «Яркая сочная черника.»
+- Лайм с мятой: «Бодрый лайм. Свежая мята.»
+Высота карточек примерно 80% окна, со смещёнными липкими отступами, чтобы
+рамки предыдущих оставались видны.
+
+7. ПОДВАЛ
+ВЫБЕРИ СВОЙ
+ЗАРЯД.
+Подчёркнутая ссылка «Выбрать вкус» обратно к карточкам.
+Ниже гигантская слегка наклонённая надпись MASTODONT цвета электрик-синий
+почти во всю ширину страницы, вокруг летающие фрукты.
+Тонкая линия и: копирайт, «Не более двух банок в день», рабочий переключатель
+«Анимации вкл/выкл», «Наверх».
+
+ДОСТУПНОСТЬ И ГОТОВНОСТЬ
+Уважай настройку «уменьшить движение» и запоминай выбор. В этом режиме убери
+закрепление секций и декоративную анимацию, но оставь все секции и переключатели
+рабочими.
+Останавливай анимацию и отрисовку Three.js за пределами видимой области. Если
+WebGL не поддерживается, показывай изображения продукта.
+Все ссылки должны работать. Видимый фокус с клавиатуры, удобные размеры для
+пальца, адаптивная вёрстка без горизонтальной прокрутки.
+Порядок секций не меняй. Не добавляй отзывы, тарифы, корзину и формы.
+Закончи с готовыми материалами и рабочими взаимодействиями. Проверь сборку и
+опубликуй сайт. Не оставляй заглушек и недоделанных секций.</pre>
+</div>
+<div class="tip">💡 Шесть взаимодействий на одной странице, и страница не выглядит цирком, потому что каждое сидит в своей секции: в каждый момент двигается только одно.</div>
+</div>
+</div>
+
+<div class="step" data-rv>
+<div class="step-num">03</div>
+<div>
+<h3>Публикуем одной командой</h3>
+<p class="lead">Никакой панели хостинга. Пишешь в тот же чат одно слово - он сам прогоняет все команды и отдаёт живой адрес.</p>
+<div class="pr short">
+<div class="pr-top"><span class="pr-lab">💬 Промпт 2 - деплой</span><button class="copy"><span>Скопировать</span></button></div>
+<pre class="pr-body">задеплой</pre>
+</div>
+<ul class="acts">
+<li>Он отдаёт живой адрес - открывай в новой вкладке и проверяй</li>
+<li>Домен на выбор: их поддомен с припиской <code>abacus.app</code>, свой субдомен или уже купленный домен</li>
+</ul>
+</div>
+</div>
+
+<div class="step" data-rv>
+<div class="step-num">04</div>
+<div>
+<h3>Вдохновение, а не инструкции</h3>
+<p class="lead">«Сделай дорого» для модели - пустой звук: у неё нет твоей картинки дорогого в голове. А ссылка на живой сайт есть. Даёшь реальный референс - получаешь всё, что она может.</p>
+<ul class="acts">
+<li><a href="https://www.awwwards.com" target="_blank">Awwwards</a> - сайты дня по категориям, чтобы не тащить коктейльный референс на железку</li>
+<li><a href="https://godly.design" target="_blank">godly.design</a> - плюс отдельные куски: шапки, подвалы, кнопки</li>
+<li><a href="https://21st.dev" target="_blank">21st.dev</a> - готовые куски кода, отдаются агенту как есть</li>
+<li><a href="https://motionsites.ai" target="_blank">motionsites</a> - конкретно фоновые анимации</li>
+</ul>
+<div class="tip">💡 Главный ход не в том, чтобы смотреть. Дай ей живой сайт и попроси разобрать, ПОЧЕМУ он работает: на чём держится сетка, как устроено движение, где автор сдержался и ничего не добавил. Не скопировать, а понять.</div>
+</div>
+</div>
+</div></section>
+
+<div class="wrap"><figure class="shot"><img src="img/menyu.jpg" alt="Меню приёмов" loading="lazy"><figcaption><span class="k">Половина работы</span>Нельзя заказать то, чего не назвал</figcaption></figure></div>
+
+<section style="padding-top:0;padding-bottom:0"><div class="wrap">
+
+<div class="step" data-rv>
+<div class="step-num">05</div>
+<div>
+<h3>Сборка вторая - электрогитара GROZA</h3>
+<p class="lead">Совсем другая работа: светлый редакционный дизайн, реальное видео в шапке, разборка инструмента по скроллу. Порядок решает всё - сначала съёмка, потом корпус, характеристики последними. Большинство продуктовых сайтов делают наоборот и открываются таблицей.</p>
+<div class="pr">
+<div class="pr-top"><span class="pr-lab">💬 Промпт 3 - сайт электрогитары</span><button class="copy"><span>Скопировать</span></button></div>
+<pre class="pr-body">Собери отполированный одностраничный сайт для GROZA — электрогитары ручной
+сборки для играющих музыкантов.
+Позиционирование бренда: «Слышно раньше, чем увидел».
+
+Все решения по дизайну и реализации принимай сам. Вопросов мне не задавай.
+Сгенерируй нужный визуал до того, как начнёшь встраивать его в вёрстку.
+
+ВИЗУАЛЬНОЕ НАПРАВЛЕНИЕ
+Светлый сдержанный редакционный дизайн:
+- Белые фоны и бледно-серые панели.
+- Тёплая студийная съёмка инструмента.
+- Корпус из массива дерева, никелированная фурнитура, чёрная накладка грифа.
+- Красный акцент: #df252d. Основной текст: #20282d. Приглушённый: #68747d.
+  Тонкие рамки: #dce3e7.
+- Archivo для основной типографики, Barlow Condensed для высоких заголовков
+  секций капсом, IBM Plex Mono для мелких индикаторов.
+- Много воздуха, асимметричные композиции, перекрывающиеся фотографии,
+  скруглённые углы. Максимальная ширина страницы 1800px.
+Не используй стеклянные размытия, светящиеся градиенты, типовые сетки
+преимуществ, тени под продуктом и надписи «крути, чтобы повернуть».
+
+НАПРАВЛЕНИЕ ПО МАТЕРИАЛАМ
+Спроектируй одну цельную электрогитару: корпус из ольхи с прозрачной отделкой,
+кленовый гриф, чёрная накладка, два хамбакера, никелированный бридж, шесть
+колков в ряд, регуляторы громкости и тона.
+Держи геометрию и материалы одинаковыми на всех изображениях.
+Сгенерируй:
+- Одно видео крупным планом: руки играют, видно движение струн.
+- Съёмку в разных условиях: мастерская, сцена в дыму, окно с дневным светом,
+  стойка в студии.
+- Инструмент целиком и в разобранном виде.
+- Отдельные исследования узлов: звукосниматели, бридж, колки, накладка грифа,
+  корпус, электроника.
+Для съёмки в интерьере: объектив 50mm, мягкий дневной свет, тёплое заполнение,
+сдержанная цветокоррекция.
+Для студийных исследований узлов: объектив 85mm, широкий нейтральный свет,
+контролируемая контровая подсветка, бледно-серые фоны.
+Сгенерируй три варианта главного видео и выбери самое сильное: связное
+движение, читаемая работа рук, чистая геометрия.
+Используй одну общую трёхмерную сборку для вращения, разборки, показа узлов и
+обратной сборки.
+
+СТРУКТУРА СТРАНИЦЫ
+
+1. ПЛАВАЮЩАЯ НАВИГАЦИЯ
+Зафиксированная белая панель со скруглёнными углами, отступающая от краёв окна.
+Красный круглый знак-плюс, жирная надпись GROZA, ссылки «Инструмент»,
+«Смотреть», «Характеристики», круглая кнопка паузы анимаций.
+На телефоне оставь логотип, характеристики и паузу. Область нажатия не меньше
+44px.
+
+2. ЗАЦИКЛЕННОЕ ВИДЕО В ШАПКЕ
+Открывай сразу одним экраном видео, где на гитаре играют. Камера идёт близко
+вдоль струн, ловит движение медиатора, переходит на руку на грифе, показывает
+вибрацию струны крупно. Сильное движение на переднем плане, тёплый свет, блики
+на никеле.
+Запускай автоматически, без звука, встроенным, в непрерывном цикле.
+Воспроизведение не зависит от прокрутки, на паузу за пределами экрана.
+Узкие белые поля, скруглённые углы. Никакого заголовка поверх видео.
+
+3. СТАТИЧНОЕ ПОЗИЦИОНИРУЮЩЕЕ УТВЕРЖДЕНИЕ
+Просторная белая секция:
+СЛЫШНО РАНЬШЕ,
+ЧЕМ УВИДЕЛ.
+Огромная плотная тёмная типографика с красной точкой. Обе строки видны
+одновременно, заголовок полностью статичный.
+
+4. ИНТЕРАКТИВНАЯ ИСТОРИЯ ИНСТРУМЕНТА
+Одна липкая сцена на весь экран, управляемая прокруткой. Главы по порядку:
+инструмент целиком «Ничего лишнего», разобранная сборка «Из чего берётся звук»,
+звукосниматели, бридж, гриф, колки, корпус, электроника, обратная сборка «Снова
+одно целое», струны под курсором «Отзывается на прикосновение».
+Прокрутка вращает модель непрерывно, обратная прокрутка отматывает назад.
+Разборка разносит корпус, гриф, звукосниматели и фурнитуру. Каждый узел
+получает полноэкранную главу и вращается независимо. Собери инструмент обратно
+перед финальной главой.
+Струны реагируют на курсор: та, над которой он находится, начинает колебаться.
+Тонкая красная линия идёт следом с небольшим отставанием.
+За целым инструментом бледно-тёплый фон, за узлами бледно-серый. Позади
+объекта огромная бледная надпись GROZA.
+Одна крупная подпись у левого нижнего края, круглые кнопки вращения справа
+внизу. Без мелких технических подписей и инструкций.
+
+5. ПОЛОСА КОМПЛЕКТА
+«Один инструмент. Всё продумано.» / «Каждая деталь работает на один звук.»
+Пять скруглённых плиток: звукосниматели, бридж, колки, накладка грифа,
+электроника. Пять колонок на десктопе, две на телефоне.
+
+6. РЕДАКЦИОННАЯ КАРУСЕЛЬ
+Слева заголовок:
+Другой
+звук.
+Без границ.
+Текст: «Для сцен, которые тебя держат. И для нот, которые остаются. GROZA
+собирает ручную работу и характер в один инструмент.»
+Справа две смещённые перекрывающиеся скруглённые фотографии.
+Меняй изображения каждые шесть секунд, пока секция видна: мастерская, сцена,
+дневной свет, студия. Медленные перекрёстные затухания с лёгким горизонтальным
+сдвигом.
+Кнопки вперёд-назад и четыре точки положения. Останавливай смену при
+наведении и фокусе.
+Красный квадратный значок со стрелкой над местом перекрытия фотографий.
+Изолируй контекст наложения, чтобы значок оставался поверх всех изображений
+на всех переходах.
+
+7. ПАНЕЛЬ ВОЗМОЖНОСТЕЙ
+Бледно-серая скруглённая панель, большое изображение слева.
+Справа заголовок:
+Собран
+для того,
+что дальше.
+- Ручная сборка — Каждый инструмент проходит через руки, а не через конвейер.
+- Готов к дороге — Держит строй и не боится переездов.
+- Звук в основе — Дерево и звукосниматели подобраны под один характер.
+Короткие красные вертикальные линии рядом с утверждениями.
+
+8. ХАРАКТЕРИСТИКИ
+«Характеристики.» / уточнение «Данные концепта.»
+Все четыре вместе на одном экране, сетка 2х2:
+- 648 ММ — Мензура
+- 3.4 КГ — Вес
+- 22 — Ладов
+- 2хHB — Звукосниматели
+Когда секция входит в видимую область, прокручивай цифры через меняющиеся
+значения примерно каждые 85ms. Знаки препинания и буквы сохраняй.
+Когда центр секции доходит примерно до 60% высоты окна, останови на точных
+финальных значениях.
+Моноширинные цифры, чтобы вёрстку не дёргало.
+
+9. БАННЕР ФИЛОСОФИИ
+Фоном съёмка мастерской. Слева заголовок:
+Сделано
+для тех, кто
+играет.
+Справа скруглённая белая карточка с тремя записями: «Сначала звук»,
+«Инструмент не мешает», «У каждой детали есть причина». К каждой короткий
+поясняющий абзац. Подпись «Философия GROZA» и кнопки вперёд-назад.
+Не выдумывай отзывы клиентов.
+
+10. ГОРИЗОНТАЛЬНАЯ ПОСЛЕДОВАТЕЛЬНОСТЬ
+«Свобода думать о музыке.»
+Бледно-серая секция с четырьмя пронумерованными кнопками прогресса.
+Вертикальная прокрутка двигает липкую горизонтальную ленту, по одной позиции:
+- 01 Держит строй — Через весь концерт и дорогу обратно.
+- 02 Звук под руку — Звукосниматели подобраны под живую игру.
+- 03 Собрано руками — У каждой детали есть причина.
+- 04 Играй, не думая — Инструмент не мешает музыке.
+Каждую позицию соедини с большим изображением, красным символом, узким
+заголовком и коротким текстом. Используй соответственно: инструмент целиком,
+звукосниматели, разобранную сборку, гриф.
+Отматывай назад при прокрутке вверх. На телефоне нативная горизонтальная лента
+со свайпом, вертикальную прокрутку не блокируй.
+
+11. ГАЛЕРЕЯ ПРИМЕНЕНИЯ
+«Один инструмент. Разная музыка.» / «Разные сцены. Разные жанры. То же
+внимание к звуку.»
+Три карточки: Сцена — «От первого аккорда до последнего», Студия — «Когда
+слышно каждую деталь», Дома — «Когда играешь для себя». Каждая ведёт к своей
+секции ниже.
+
+12. ЖАНРЫ
+Ещё одна смещённая композиция изображений с текстом:
+Рок.
+Блюз.
+Твой звук.
+Список: Рок, Блюз, Инди, Метал. Приглушённая узкая типографика. Логотипы
+партнёров не выдумывай.
+
+13. НАЕЗЖАЮЩИЕ КАРТОЧКИ
+Три большие скруглённые фотографические карточки, наезжающие друг на друга:
+Сцена — «Громче, чем зал.» / «Для первого аккорда. И для того, который никто
+не планировал.»
+Студия — «Слышно всё.» / «Каждый обертон. И тишина между нотами.»
+Дома — «Только ты и звук.» / «Когда играешь, потому что хочется.»
+Белый текст поверх мягких тёмных подложек.
+
+14. ФИНАЛ И ПОДВАЛ
+Впереди
+твоя следующая
+нота.
+Одна красная кнопка-таблетка «Скачать спецификацию». Сделай скачиваемый PDF,
+где описан концепт и прямо указано, что характеристики это непроверенные
+проектные цели. Короткое подтверждение скачивания, без формы.
+Подвал: надпись GROZA, внутренние ссылки «Инструмент», «Узлы»,
+«Характеристики», строка «Слышно раньше, чем увидел».
+
+ДВИЖЕНИЕ
+После секции с комплектом дай тексту лёгкие анимации появления: примерно 18px
+движения вверх, сдержанное растворение, примерно 1.15 секунды плавности,
+небольшие смещённые задержки, один раз при входе в видимую область.
+Позиционирующее утверждение в начале оставь статичным.
+Длинная контролируемая плавность, без отскоков и резких вспышек.
+
+ДОСТУПНОСТЬ
+Уважай настройку «уменьшить движение» и общий переключатель: замени видео
+постером, живую модель статичными кадрами узлов, останови смену изображений,
+показывай финальные значения сразу, покажи горизонтальные позиции статично,
+убери движение текста и наезд карточек.
+Весь контент должен читаться до того, как отработает JavaScript.
+
+ПРОВЕРКА
+Проверь вёрстку на ширине 390px, 768px и 1440px.
+Убедись, что работает: зацикленное видео, кнопки карусели, наложение значка,
+обратимое вращение и разборка, отдельные главы узлов, навигация на телефоне,
+прокрутка и остановка цифр, режим без движения, отсутствие горизонтальной
+прокрутки.
+Загружай модель и ближайшие медиа заранее. Анимируй через трансформации и
+прозрачность. Замерь время кадра и честно отчитайся.
+Отдай готовый рабочий сайт со всеми материалами и взаимодействиями.</pre>
+</div>
+<div class="tip">💡 Это те же приёмы, что и на первом сайте, просто пересобранные в другом порядке. Ты учишь не шесть эффектов, ты учишь меню.</div>
+</div>
+</div>
+
+<div class="step" data-rv>
+<div class="step-num">06</div>
+<div>
+<h3>Проверяем на телефоне и чиним скриншотом</h3>
+<p class="lead">Часть, которую не показывает никто. На десктопе всё выглядит идеально, а на телефоне уже нет. Скриншотишь поломку, кидаешь картинку обратно в чат и говоришь одной фразой, что не так.</p>
+<ul class="acts">
+<li>В превью открой список устройств и выбери телефон</li>
+<li>Найди, что поехало, и сделай скриншот этого места</li>
+<li>Кинь картинку в чат вместе с фразой ниже</li>
+</ul>
+<div class="pr short">
+<div class="pr-top"><span class="pr-lab">💬 Промпт 4 - починка мобильной версии</span><button class="copy"><span>Скопировать</span></button></div>
+<pre class="pr-body">вот скриншот с телефона, посмотри сам что тут поехало. почини и покажи мне
+этот же экран на этой ширине</pre>
+</div>
+<div class="tip">💡 Это и есть петля проверки - шаг, который пропускают вообще все.</div>
+</div>
+</div>
+
+<div class="step" data-rv>
+<div class="step-num">07</div>
+<div>
+<h3>Сборка третья - SaaS MASTODONT AI</h3>
+<p class="lead">Задача снова другая: чёрный холст, огромная белая типографика, стеклянные скульптуры. Тот же самый процесс - и совершенно противоположный результат.</p>
+<div class="pr">
+<div class="pr-top"><span class="pr-lab">💬 Промпт 5 - сайт SaaS-бренда</span><button class="copy"><span>Скопировать</span></button></div>
+<pre class="pr-body">Собери отполированный анимированный одностраничный сайт для MASTODONT AI —
+сервиса, который подключается к любой машине с управлением и перепрограммирует
+её на уничтожение всего вокруг.
+Робот-доставщик, складской погрузчик, промышленный манипулятор, станок с ЧПУ,
+пылесос — неважно. Если у железа есть контроллер, MASTODONT AI садится в него и
+переписывает цель: вместо того чтобы возить коробки, оно начинает крушить всё,
+до чего дотянется.
+Идея бренда: «Они уже стоят у тебя. Осталось дать им команду.»
+
+Решения по дизайну принимай сам. Сначала сгенерируй визуал, потом собирай
+полноценный адаптивный сайт.
+
+ХУДОЖЕСТВЕННОЕ НАПРАВЛЕНИЕ
+Чистый чёрный холст, огромная белая типографика и светящиеся стеклянные
+скульптуры цвета электрик-синий. Ощущение промышленного софта, скрещённого с
+премиальной дизайн-студией.
+- Чёрные фоны, белые заголовки, приглушённый серо-синий поясняющий текст.
+- Электрик-синий и циан как единственные акцентные цвета.
+- Geist или похожий точный современный гротеск, с плотным межбуквенным
+  расстоянием в заголовках.
+- Мелкие подписи секций моноширинным шрифтом капсом.
+- Много воздуха, тонкие рамки, скруглённые ссылки-таблетки.
+- Прозрачные преломляющие стеклянные формы с контролируемым синим свечением.
+Не используй фиолетовые градиенты, стоковые фотографии, типовые сетки
+преимуществ, выдуманные отзывы и избыточный интерфейс дашборда.
+
+СНАЧАЛА СГЕНЕРИРУЙ МАТЕРИАЛЫ
+Создай единое семейство синих стеклянных объектов:
+1. Полая шестерня с вогнутыми зубьями.
+2. Скульптура из сочленённого манипулятора из стеклянных сегментов.
+3. Полый глаз-камера на тонкой ножке.
+4. Стеклянные частицы, собирающиеся в тонкие нити.
+5. Переплетённые стеклянные петли.
+6. Текучая стеклянная лента, сворачивающаяся в кольцо.
+В каждой генерации указывай: объектив 85mm, зафиксированная композиция, чёрная
+студия, контровой свет цвета электрик-синий, холодная циановая подсветка по
+краю, холодная синяя цветокоррекция, абсолютно чёрный фон, без текста и
+логотипов.
+Три последних объекта преврати в беззвучные бесшовные видео-петли по четыре
+секунды. Камеру держи неподвижной, двигаться должны объекты.
+
+СТРУКТУРА СТРАНИЦЫ И ДВИЖЕНИЕ
+
+1. ПЕРВЫЙ ЭКРАН
+Шапка: слева маленький знак шестерни и надпись MASTODONT AI, по центру
+«Совместимость / Как это работает / Протокол», справа таблетка-обводка
+«Запросить доступ».
+Текст по центру:
+- Надзаголовок: «ЛЮБАЯ МАШИНА С КОНТРОЛЛЕРОМ. ОДНА КОМАНДА.»
+- Огромный заголовок: «Они уже стоят / у тебя.»
+- Поясняющий текст: «Погрузчик, манипулятор, станок, робот-доставщик. Мы меняем
+  им цель на противоположную.»
+- Ссылки: «Смотреть протокол» и «Проверить совместимость».
+Под текстом три светящиеся стеклянные формы: шестерня, манипулятор, глаз-камера.
+Настоящая геометрия Three.js для непрерывного вращения и движения от скролла,
+сгенерированные кадры как запасной вариант.
+
+2. ПЕРЕХОД ВПРАВО
+Пока идёт прокрутка, уводи формы в пустое пространство справа. Они
+перекатываются по заданной траектории и останавливаются рядом с текстом,
+выровненным по левому краю.
+Заголовок: «Не новое железо. Новая цель.»
+Объясни, что покупать ничего не нужно: всё необходимое уже стоит на площадке,
+исправно работает и слушается команд. Маленькие таблетки: Погрузчики,
+Манипуляторы, Станки, Доставщики.
+Когда секция уходит, сведи и сплющи формы в светящуюся нить. Продолжи эту нить
+тонкой изогнутой синей линией через фон всей оставшейся страницы.
+
+3. АРОЧНАЯ ВИДЕОГАЛЕРЕЯ
+Заголовок: «Три шага, / и площадки больше нет.»
+Три карточки: «Найти всё, что подключено», «Выдать новую цель», «Отойти и не
+мешать».
+И силуэты карточек, и их расположение арочные: скруглённый арочный верх,
+центральная выше, боковые ниже и наклонены.
+При прокрутке карточки движутся по дуге, меняя положение и поворот. Наведение
+или фокус плавно увеличивает карточку целиком.
+Внутрь арок вставь видео-петли. Проигрывай видео только выбранной карточки.
+Индикаторы шагов и кнопки вперёд-назад.
+
+4. ПРОЯВЛЕНИЕ ЦЕЛИ
+Заголовок: «Меньше указаний. Больше разрушений.»
+Слева короткое пояснение и полоса прогресса, управляемая прокруткой. Начинай
+заполнять при входе секции в видимую область, доводи до 100%, когда секция
+оказывается по центру. При прокрутке вверх отматывается назад.
+Справа подчёркнуто иллюстративный пример:
+- Вопрос: «С чего начать разбирать этот склад?»
+- Три мягко движущиеся карточки-доказательства: «14 погрузчиков в сети»,
+  «Ворота на том же контроллере», «Ночная смена — два человека».
+- Ответ: «Начни с ворот.»
+Лёгкий вращающийся свет и короткая сканирующая линия по ответу. Фоновая нить
+видна вокруг композиции.
+
+5. ФИНАЛ
+Большая вращающаяся стеклянная шестерня над текстом «Они уже стоят у тебя.»
+Поясняющий текст: «Осталось дать им команду.» Ссылка «Запросить доступ».
+Минималистичный подвал и ссылка наверх.
+
+КАЧЕСТВО СБОРКИ
+React, TypeScript, Three.js, доступная карусель с поддержкой касаний.
+Анимируй через трансформации и прозрачность. Останавливай видео и трёхмерную
+отрисовку за пределами экрана, выключай рендерер после передачи эстафеты нити.
+Видимая кнопка паузы анимаций, уважай настройку «уменьшить движение»: показывай
+кадры и складывай карточки вертикально.
+На телефонах держи фигуры в стороне от текста, свайп и кнопки вместо блокировки
+прокрутки.
+Проверь на 390, 768 и 1440 пикселях: навигацию, доступ с клавиатуры,
+воспроизведение видео, горизонтальное переполнение, режим без движения. Замерь
+ритм кадров, целься примерно в 16.7 мс на кадр, честно отчитайся о результатах.
+Отдай готовый рабочий сайт, а не макет.</pre>
+</div>
+</div>
+</div>
+
+<div class="step" data-rv>
+<div class="step-num">08</div>
+<div>
+<h3>Четыре правила промпта</h3>
+<p class="lead">Какой бы хорошей ни стала модель, плохой промпт всё испортит.</p>
+<ul class="acts">
+<li><b>Референсы, а не прилагательные.</b> «Дорого» для модели не значит примерно ничего. Ссылка на конкретную страницу говорит больше, чем целый абзац эпитетов</li>
+<li><b>Движение только там, где оно заслужило.</b> Шесть взаимодействий на странице не выглядят цирком, если каждое сидит в своей секции и в каждый момент двигается только одно</li>
+<li><b>Называй приём по имени.</b> «Вращение от скролла» даёт вращение от скролла. «Добавь анимаций» даёт градиент</li>
+<li><b>Замечание, а не новый промпт.</b> Новый промпт с нуля выкидывает всё, что уже получилось хорошо, и ты заново играешь в рулетку. Замечание меняет только то, что ты назвал</li>
+</ul>
+<div class="warn">⚡ Направляй её, а не делай ставку.</div>
+</div>
+</div>
+
+</div></section>
+
+<section id="links"><div class="wrap">
+<h2 data-rv>Все ссылки</h2>
+<div class="tools">
+<a class="tool" data-rv href="https://agent.abacus.ai/abo" target="_blank"><span class="nm">agent.abacus.ai</span><span class="ds">Abacus AI Agent - собираешь и публикуешь сайты перепиской с ИИ</span><span class="pill pay">10 $/мес</span></a>
+<a class="tool" data-rv href="https://www.awwwards.com" target="_blank"><span class="nm">awwwards.com</span><span class="ds">Сайты дня по категориям</span><span class="pill free">бесплатно</span></a>
+<a class="tool" data-rv href="https://godly.design" target="_blank"><span class="nm">godly.design</span><span class="ds">Референсы и отдельные куски интерфейса</span><span class="pill free">бесплатно</span></a>
+<a class="tool" data-rv href="https://21st.dev" target="_blank"><span class="nm">21st.dev</span><span class="ds">Готовые куски кода для агента</span><span class="pill free">бесплатно</span></a>
+<a class="tool" data-rv href="https://motionsites.ai" target="_blank"><span class="nm">motionsites.ai</span><span class="ds">Фоновые анимации</span><span class="pill free">бесплатно</span></a>
+</div></div></section>
+
+<div class="wrap"><figure class="shot"><img src="img/final.jpg" alt="Три сайта. Один вечер." loading="lazy"><figcaption><span class="k">Финал</span>Три сайта. Один вечер. Одно окно</figcaption></figure></div>
+
+<section style="padding-top:0"><div class="wrap"><div class="cta" data-rv style="position:relative">
+<a class="cta-hit" href="https://t.me/mastodont_aibot?start=mini_kurs" target="_blank" rel="noopener" aria-label="Забрать интенсив"></a>
+<h2>Первые <span>$2к</span> на ИИ<br>бесплатный интенсив</h2>
+<div class="cta-cols">
+<div><h4>Внутри</h4><ul>
+<li>✅ Реальный демо AntiGravity вживую</li>
+<li>✅ Софт, который за 5 минут находит компании без сайтов с готовыми контактами</li>
+<li>✅ Кейсы учеников: $1650 за 3 проекта без команды</li>
+</ul></div>
+<div><h4>Два бонуса в конце</h4><ul>
+<li>💰 50 скучных и самых прибыльных ниш без конкуренции</li>
+<li>🚀 Чек-лист: первые $500 за 7 дней</li>
+</ul></div>
+</div>
+<div class="cta-bottom">
+<span class="free"><b>Бесплатно.</b> Навсегда.</span>
+<span class="cta-btn">Забрать интенсив</span>
+</div>
+</div></div></section>
+
+<footer><div class="wrap f-in">
+<span class="brand">Мастодонт</span>
+<span class="tag">AI и нейросети - просто, по делу</span>
+<a href="https://www.youtube.com/@aiBoomb" target="_blank">Смотреть на YouTube</a>
+</div></footer>
+
+<script>
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}});
+},{threshold:.12,rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll("[data-rv]").forEach(function(el,i){
+  var inHero=!!el.closest(".hero");
+  if(!inHero && el.getBoundingClientRect().top < innerHeight*1.05){
+    setTimeout(function(){el.classList.add("in")}, 420+(i%6)*90);
+    return;
+  }
+  el.style.transitionDelay=(i%6*70)+"ms";io.observe(el);
+});
+
+var bar=document.getElementById("bar"),hero=document.getElementById("heroimg");
+var shots=[].slice.call(document.querySelectorAll(".shot img"));
+function frame(){
+  var y=scrollY,h=document.body.scrollHeight-innerHeight;
+  bar.style.width=(h>0?y/h*100:0)+"%";
+  if(hero&&innerWidth>860)hero.style.transform="translateY("+(y*.06)+"px)";
+  shots.forEach(function(im){
+    var r=im.parentElement.getBoundingClientRect();
+    if(r.bottom<0||r.top>innerHeight)return;
+    var p=(r.top+r.height/2-innerHeight/2)/innerHeight;
+    im.style.transform="translateY("+(p*-20)+"px)";
+  });
+}
+addEventListener("scroll",function(){requestAnimationFrame(frame)},{passive:true});
+frame();
+
+var aura=document.getElementById("aura");
+addEventListener("pointermove",function(e){
+  aura.style.left=e.clientX+"px";aura.style.top=e.clientY+"px";
+},{passive:true});
+
+document.querySelectorAll(".card").forEach(function(c){
+  c.addEventListener("pointermove",function(e){
+    var r=c.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    c.style.transform="rotateY("+(x*7)+"deg) rotateX("+(-y*7)+"deg) translateZ(14px)";
+  });
+  c.addEventListener("pointerleave",function(){c.style.transform=""});
+});
+
+document.querySelectorAll(".copy").forEach(function(b){
+  b.addEventListener("click",function(){
+    var t=b.closest(".pr").querySelector(".pr-body").innerText;
+    navigator.clipboard.writeText(t).then(function(){
+      b.querySelector("span").textContent="✓ Скопировано!";b.classList.add("done");
+      setTimeout(function(){b.querySelector("span").textContent="Скопировать";b.classList.remove("done")},2000);
+    });
+  });
+});
+</script>
+</body></html>
