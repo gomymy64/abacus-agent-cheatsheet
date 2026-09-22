@@ -148,6 +148,12 @@ max-height:360px;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--a1) va
 .pr-body::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--a1),var(--a2));border-radius:6px}
 .pr.short .pr-body{max-height:none}
 
+.dl{display:inline-flex;align-items:center;gap:10px;margin:8px 0 4px;
+background:linear-gradient(100deg,var(--a1),var(--a2));color:#07070C;
+font-family:"Blender";font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+padding:14px 26px;border-radius:3px;text-decoration:none;
+box-shadow:0 10px 28px rgba(139,92,246,.28);transition:transform .22s,box-shadow .22s}
+.dl:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 16px 40px rgba(139,92,246,.45)}
 .tip,.warn{border-radius:6px;padding:16px 20px;margin:18px 0 0;font-size:.94em}
 .tip{background:rgba(34,211,238,.05);border:1px solid rgba(34,211,238,.24)}
 .warn{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.3)}
@@ -266,33 +272,15 @@ font-size:13px;letter-spacing:.14em;text-transform:uppercase}
 <div class="step-num">01</div>
 <div>
 <h3>Ставим скилл с принципами дизайна</h3>
-<p class="lead">Подключать генераторы картинок и видео не надо - они уже внутри. Единственное, что грузим руками, это обычный текстовый файл с принципами дизайна. Он заставляет модель держать один стиль во всех сборках.</p>
+<p class="lead">Подключать генераторы картинок и видео не надо - они уже внутри. Единственное, что грузим руками, это обычный текстовый файл с принципами дизайна: слои, отступы, сдержанность, меню анимаций и скелет промпта из семи блоков. Он заставляет модель держать один стиль во всех сборках.</p>
 <ul class="acts">
 <li>Открой <a href="https://agent.abacus.ai/abo" target="_blank">agent.abacus.ai</a> и залогинься</li>
 <li>Зайди в раздел <b>Apps</b> - добавить скилл</li>
-<li>Загрузи текстовый файл с принципами (текст ниже)</li>
-<li>Назови скилл <code>Design King</code> и напиши короткий дескрипшен - когда его применять</li>
+<li>Скачай скилл кнопкой ниже и загрузи файл <code>SKILL.md</code> из архива</li>
+<li>Назови скилл - в видео это <code>Design King</code> - и напиши короткий дескрипшен, когда его применять</li>
 <li>Создай скилл и выбери его в чате перед сборкой</li>
 </ul>
-<div class="pr">
-<div class="pr-top"><span class="pr-lab">📄 Файл скилла - принципы дизайна</span><button class="copy"><span>Скопировать</span></button></div>
-<pre class="pr-body">ПРИНЦИПЫ ДИЗАЙНА
-
-СЛОИ
-Глубина вместо плоскости. Фон, средний план и передний план работают
-по-разному: разная скорость движения, разный вес, разная резкость.
-Плоская страница - это страница, где всё лежит в одном слое.
-
-ОТСТУПЫ
-Место, чтобы дышать. Воздух вокруг крупного элемента - это часть
-композиции, а не пустота, которую надо чем-то занять.
-Поля страницы широкие, между секциями много пространства.
-
-СДЕРЖАННОСТЬ
-Половина работы - решить, чего на странице не будет.
-Движение только там, где оно что-то говорит.
-В каждый момент времени двигается только одно.</pre>
-</div>
+<a class="dl" href="files/design-principles.zip" download>⬇ Скачать скилл</a>
 <div class="tip">💡 В каталоге уже есть готовые скиллы - можешь не писать свой, а поставить чужой.</div>
 </div>
 </div>
